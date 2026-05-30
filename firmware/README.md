@@ -76,6 +76,56 @@ tools/car.sh stream             # prints the MJPEG URL for browser/VLC
 tools/car.sh status
 ```
 
+## Autonomy
+
+`tools/reflex_drive.py` is the current hybrid autonomy entrypoint. It uses two
+separate loops:
+
+- a fast local loop on the Mac captures frames, runs local perception, and owns
+  every motor command;
+- a slower VLM loop only updates high-level goal bias, so VLM latency cannot
+  freeze collision avoidance or directly make the car spin.
+- the local loop keeps a compact egocentric exploration map: approximate current
+  cell, visited cells, recently blocked cells, and last target observations. The
+  map biases exploration toward open unvisited directions, commits to a selected
+  frontier for a few seconds, and triggers a larger loop-escape maneuver when the
+  car keeps recovering in the same area.
+
+Start with dry-run tuning; it reads the live camera but does not move motors:
+
+```bash
+tools/reflex_drive.py --dry-run --vlm off --secs 10 --debug
+tools/reflex_drive.py --dry-run --target "yellow toy road roller" --secs 20 --debug
+```
+
+Drive with the same controller after the dry-run decisions look sane:
+
+```bash
+tools/reflex_drive.py --target "toy road roller / asphalt paver / steamroller"
+```
+
+The script auto-reexecs itself through `.venv/bin/python` when the venv exists,
+so direct `tools/reflex_drive.py ...` launches use the installed local ML stack.
+
+Useful safety knobs:
+
+| Option | Effect |
+|---|---|
+| `--speed 2..3` | normal forward speed; default is 2 for carpet edges |
+| `--min-drive-speed 2..3` | minimum ordinary arc-drive power during exploration |
+| `--approach-speed 1..2` | lower speed cap only once the target is large/very close |
+| `--escape-speed 3..5` | stronger reverse/recovery power |
+| `--turnspeed 60..90` | firmware in-place turn power for recovery nudges |
+| `--target-max-trim`, `--target-far-max-trim` | cap steering while the target is visible so it stays in camera view |
+| `--target-push-min-open` | keep pushing toward a visible target over carpet edges unless the center is truly blocked |
+| `--map-weight 0..1` | how strongly the local exploration map biases route choice; default is 0.65 |
+| `--explore-commit-sec` | how long to keep a chosen exploration direction before re-planning |
+| `--loop-*` | loop detector / larger escape maneuver when the car is stuck in one area |
+| `--vlm off` | pure local exploration / obstacle avoidance |
+| `--perception heuristic` | fallback when the depth model is unavailable |
+| `--no-stop-on-large-target` | keep moving even if VLM says the target is close |
+| `--block`, `--slow`, `--open` | local openness thresholds for recovery vs arc driving |
+
 ### Raw HTTP API
 
 | Request | Effect |
