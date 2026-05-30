@@ -227,11 +227,20 @@ firmware/**/build/
 .venv/
 .pio/
 
-# Camera captures (photos of the home) — root-level images only; docs/ images stay tracked
-/*.jpg
-/*.jpeg
-/*.png
-/*.gif
+# Camera captures / screenshots / local media should stay out of git.
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.webp
+*.bmp
+*.tif
+*.tiff
+*.heic
+*.mov
+*.mp4
+*.avi
+*.mkv
 
 # Local ML model weights (large; downloaded, not source)
 /models/
