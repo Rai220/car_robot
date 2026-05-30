@@ -18,7 +18,7 @@ bool ap = false;  // false = join router (STA), true = own hotspot (AP)
 
 // --- credentials ---
 const char* ssid     = "YOUR_2.4GHZ_SSID";  // router SSID (STA) or hotspot name (AP)
-const char* password = "YOUR_PASSWORD";     // network password (>=8 chars for AP; blank = open)
+const char* password = "";                  // set the real password only in wifi_config.h
 
 // --- AP-only settings (ignored in STA mode) ---
 int channel       = 11;  // WiFi channel for AP mode

@@ -12,10 +12,6 @@
 #include "SetMotor.h"
 #include "app_server.h"
 
-// bool ap = 0;  //When it is 1, esp32 turns on wifi, the mobile phone is connected, and the IP is 192.168.4.1; when it is 0, it is connected to wifi, and the IP needs to be obtained through serial port printing.
-// const char* ssid = "ChinaNet_2.4G";        //AP Name or Router SSID
-// const char* password = "ChinaNet@233";  //Password. Leave blank for open network.
-
 // WiFi credentials live in wifi_config.h (git-ignored so the password is not committed).
 // Copy wifi_config.example.h -> wifi_config.h and edit it.
 #include "wifi_config.h"
