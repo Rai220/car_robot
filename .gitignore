@@ -216,3 +216,25 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# --- car_robot firmware ---
+# Real WiFi credentials must never be committed (template lives in wifi_config.example.h)
+firmware/**/wifi_config.h
+# Arduino build artifacts
+firmware/**/build/
+
+# PlatformIO + local Python venv
+.venv/
+.pio/
+
+# Camera captures (photos of the home) — root-level images only; docs/ images stay tracked
+/*.jpg
+/*.jpeg
+/*.png
+/*.gif
+
+# Local ML model weights (large; downloaded, not source)
+/models/
+
+# macOS / misc
+.DS_Store

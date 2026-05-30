@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Keyestudio Vision Smart Car &mdash; keyestudio WiKi  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="../README.html" /> 
+<script async type="text/javascript" src="/_/static/javascript/readthedocs-addons.js"></script><meta name="readthedocs-project-slug" content="keyestudio-ks5017" /><meta name="readthedocs-version-slug" content="latest" /><meta name="readthedocs-resolver-filename" content="/docs/Tutorial.html" /><meta name="readthedocs-http-status" content="200" /></head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            keyestudio WiKi
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">KS5017 Keyestudio Vision Smart Car</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Keyestudio Vision Smart Car</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#kit-list">1. Kit List</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#description">2. Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#parameters">3. Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#features">4. Features</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#product-assembly">1.Product Assembly</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#esp32-cam-mainboard">2.ESP32-CAM Mainboard</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">(1). Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">(2). Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#esp32-cam-pinout">(3). ESP32-CAM Pinout</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#motor-driver-board-introduction">3. Motor Driver Board Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#about-arduino-ide">4. About Arduino IDE</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#download-arduino-ide">(1).Download Arduino IDE</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#a-windows-system">A.Windows System</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#b-mac-system">B. MAC System</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#install-esp32-development-environment">(2).Install ESP32 Development Environment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#a-install-it-on-arduino-ide">A：Install it on Arduino IDE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#b-download-the-provided-offline-installation-package">B：Download the provided offline installation package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#install-the-ch340-driver-on-your-computer">(3).Install the CH340 driver on your computer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#upload-code-to-esp32-cam-board-via-arduino-ide">(4).Upload code to ESP32-CAM board via Arduino IDE</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="#control-the-leds-of-the-car">5. Control the LEDs of the Car</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#control-the-brightness-of-leds">6. Control the Brightness of LEDs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#motor-drive-mode">7. Motor Drive Mode</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#video-smart-car">8. Video Smart Car</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#gameplay-expansion-ideas">9. Gameplay Expansion Ideas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#common-problems">10. Common Problems</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">keyestudio WiKi</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Keyestudio Vision Smart Car</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/docs/Tutorial.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="keyestudio-vision-smart-car">
+<h1>Keyestudio Vision Smart Car<a class="headerlink" href="#keyestudio-vision-smart-car" title="Link to this heading"></a></h1>
+<p><img alt="_DSC0007" src="../_images/_DSC0007.png" /></p>
+<section id="kit-list">
+<h2>1. Kit List<a class="headerlink" href="#kit-list" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>#</p></th>
+<th class="head text-center"><p>Picture</p></th>
+<th class="head text-center"><p>Components</p></th>
+<th class="head text-center"><p>QTY</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>1</p></td>
+<td class="text-center"><p><img alt="img" src="../_images/wps1-1706065650849-1.jpg" /></p></td>
+<td class="text-center"><p>ESP32-CAM</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>2</p></td>
+<td class="text-center"><p><img alt="img" src="../_images/wps2-1706065685446-3.jpg" /></p></td>
+<td class="text-center"><p>Motor Driver Board</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>3</p></td>
+<td class="text-center"><p><img alt="img" src="../_images/wps3-1706065716210-5.jpg" /></p></td>
+<td class="text-center"><p>Wheel</p></td>
+<td class="text-center"><p>2</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>4</p></td>
+<td class="text-center"><p><img alt="img" src="../_images/wps4.jpg" /></p></td>
+<td class="text-center"><p>Camera Bracket</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>5</p></td>
+<td class="text-center"><p><img alt="img" src="../_images/wps5.jpg" /></p></td>
+<td class="text-center"><p>USB Cable</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>6</p></td>
+<td class="text-center"><p><img alt="img" src="../_images/wps6.jpg" /></p></td>
+<td class="text-center"><p>Directional Wheel</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>7</p></td>
+<td class="text-center"><p><img alt="img" src="../_images/wps4-1706151192121-4.jpg" /></p></td>
+<td class="text-center"><p>M3*8 Dual-pass Copper Pillar</p></td>
+<td class="text-center"><p>2</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>8</p></td>
+<td class="text-center"><p><img alt="img" src="../_images/wps1-1708225434193-1.jpg" /></p></td>
+<td class="text-center"><p>M3*20+6MM Single-pass Copper Pillar</p></td>
+<td class="text-center"><p>2</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>9</p></td>
+<td class="text-center"><p><img alt="img" src="../_images/wps5-1706151210616-6.jpg" /></p></td>
+<td class="text-center"><p>M3*6 Flat Head Screw</p></td>
+<td class="text-center"><p>4</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>10</p></td>
+<td class="text-center"><p><img alt="img" src="../_images/wps6-1706151224654-8.jpg" /></p></td>
+<td class="text-center"><p>3*83MM Screwdriver</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>11</p></td>
+<td class="text-center"><p><img alt="img" src="../_images/wps2-1708225490214-3.jpg" /></p></td>
+<td class="text-center"><p>40*35mm M3 Acrylic Board</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>12</p></td>
+<td class="text-center"><p><img alt="cr123a" src="../_images/cr123a.png" /></p></td>
+<td class="text-center"><p>CR123A lithium battery <br/>3.7V rechargeable<br/>pointed end <br/>(self-provided)</p></td>
+<td class="text-center"><p>1</p></td>
+</tr>
+</tbody>
+</table>
+<p style="color:red;">Note: When choosing CR123A lithium battery, please ensure that: 1- it is rechargeable, 2- its output voltage is 3.7V, 3 the dimensions are 34mm x 16.5mm (error 0.5 or so) and its positive terminal is the pointed end.</p>
+<p><img alt="cr123aSize" src="../_images/cr123aSize.jpg" /></p>
+</section>
+<section id="description">
+<h2>2. Description<a class="headerlink" href="#description" title="Link to this heading"></a></h2>
+<p>The ESP32-CAM video car is a smart car based on the ESP32-CAM module. It has video transmission and remote control functions. The ESP32-CAM module is an IoT development board that integrates a camera and a Wi-Fi module, which is able to transmit images captured by the camera in real time. Combined with other electronic modules and components, a powerful video car can be built.</p>
+<p>What’s more, it provides four GPIO ports for expanding sensors and  modules, and Lego holes on both sides of the driver board make the car’s gameplay more imaginative.</p>
+</section>
+<section id="parameters">
+<h2>3. Parameters<a class="headerlink" href="#parameters" title="Link to this heading"></a></h2>
+<p>USB voltage / charging voltage: 5V</p>
+<p>Working voltage: 5V/3.3V</p>
+<p>Battery voltage: 3.7V</p>
+<p>Data transmission method: WiFi</p>
+<p>Operating temperature: –10 to +65 degrees Celsius</p>
+</section>
+<section id="features">
+<h2>4. Features<a class="headerlink" href="#features" title="Link to this heading"></a></h2>
+<p>(1). The car integrates the download circuit of the ESP32-CAM development board into a motor driver board, which greatly improves the convenience of using the ESP32-CAM.</p>
+<p>(2). We have integrated the charging function of the car into the motor driver board.</p>
+<p>(3). Simple assembly: we only need to assemble the directional wheel and wheels.</p>
+<p>(4). Strong scalability: we use IIC to control the motor. The saved IO ports are used to expand the gameplay by itself, and holes are reserved for building Lego.</p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="product-assembly">
+<h1>1.Product Assembly<a class="headerlink" href="#product-assembly" title="Link to this heading"></a></h1>
+<p>The assembly of the video car is very simple, you only need to assemble the directional wheel and wheels.</p>
+<p>Step 1: Fix the M3x8MM copper pillars to the directional wheel with screws.</p>
+<p><img alt="install1" src="../_images/install1.gif" /></p>
+<p>Step 2: Fix the directional wheel to the driver board of the car with M3x20+6MM copper pillars.</p>
+<p><img alt="install2" src="../_images/install2.gif" /></p>
+<p>Step 3: Assemble the wheel onto the motor. Please note that the D-shaped slot of the wheel must be consistent with the one on the motor.</p>
+<p><img alt="install3" src="../_images/install3.gif" /></p>
+<p>Step 4: Remove the protective film from the acrylic board.</p>
+<p><img alt="7040258789f2926c2c1ce0aca2b5c019" src="../_images/7040258789f2926c2c1ce0aca2b5c019.jpg" /></p>
+<p>Step 5: After the battery is assembled (note: the positive and negative poles of the battery), then fasten it to the M3x20+6MM copper pillars with screws.</p>
+<p><img alt="install4" src="../_images/install4.gif" /></p>
+<p>Step 6:Tear off the double-sided tape under the camera base and assemble it on the ESP32-CAM card slot so that it supports the camera at 90 degrees.</p>
+<p><img alt="asdsafa45555" src="../_images/asdsafa45555.png" /></p>
+<p>Step 7: Plug the ESP32-CAM development board into the car motor driver board, then the video car is successfully assembled.</p>
+<p><img alt="install5" src="../_images/install5.gif" /></p>
+<p>​</p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="esp32-cam-mainboard">
+<h1>2.ESP32-CAM Mainboard<a class="headerlink" href="#esp32-cam-mainboard" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>(1). Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<p>ESP32-CAM is a development board based on the ESP32 chip, which integrates a camera module for building camera and video applications. The ESP32 chip is a low-power, high-performance Wi-Fi and Bluetooth dual-module solution with rich hardware resources and powerful software support.</p>
+<p>Features：</p>
+<ol class="arabic simple">
+<li><p>High performance: The ESP32 chip uses a dual-core processor with a main frequency of up to 240MHz and has strong computing and processing capabilities.</p></li>
+<li><p>Wi-Fi and Bluetooth functions: It can be connected to the network via Wi-Fi and communicate with other devices. Bluetooth function enables wireless connections with other Bluetooth devices.</p></li>
+<li><p>Memory and storage: ESP32-CAM has 4MB of onboard Flash memory, which can be used to store programs and data. Likewise, it has a large amount of SRAM memory for running applications.</p></li>
+<li><p>Camera module: The ESP32-CAM board integrates a camera module that can be used to capture photos and videos, then process and transmit them.</p></li>
+<li><p>Peripheral interfaces: The ESP32-CAM board boasts rich peripheral interfaces such as UART, GPIO, I2C and SPI, which can be used to connect and communicate with other external devices.</p></li>
+<li><p>Development environment: You can use Arduino IDE or other development environments that support ESP32 chips for programming and development.</p></li>
+<li><p>Scalability: The pins on the ESP32-CAM board can be used to connect external sensors and modules such as temperature sensors and light sensors.</p></li>
+</ol>
+<p>The ESP32-CAM development board is widely used in the IoT, smart homes, monitoring systems as well as robots, which is very suitable for realizing real-time video surveillance, image recognition, face recognition remote operation. At the same time, due to its rich functionality and good scalability, it is also one of the ideal choices for embedded system and IoT development.</p>
+</section>
+<section id="id1">
+<h2>(2). Parameters<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Smallest 802.11b/g/n Wi-Fi BT SoC module</p></li>
+<li><p>Low-power 32-bit CPU that can also serve application processors</p></li>
+<li><p>Clock speed is up to 160MHz, and the total computing power is up to 600 DMIPS</p></li>
+<li><p>Built-in 520 KB SRAM and external 4MPSRAM</p></li>
+<li><p>Support UART/SPI/I2C/PWM/ADC/DAC</p></li>
+<li><p>Support OV2640 and OV7670 cameras with built-in flash</p></li>
+<li><p>Support image WiFI upload</p></li>
+<li><p>Support TF card</p></li>
+<li><p>Support multiple sleep modes</p></li>
+<li><p>Embedded Lwip and FreeRTOS</p></li>
+<li><p>Support STA/AP/STA+AP operation modes</p></li>
+<li><p>Support Smart Config/AirKiss technology</p></li>
+<li><p>Support serial port local and remote firmware upgrade (FOTA)</p></li>
+</ol>
+</section>
+<section id="esp32-cam-pinout">
+<h2>(3). ESP32-CAM Pinout<a class="headerlink" href="#esp32-cam-pinout" title="Link to this heading"></a></h2>
+<p><img alt="2-3-1" src="../_images/2-3-1.png" /></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p>Camera</p></th>
+<th class="head text-center"><p>ESP32 Pin</p></th>
+<th class="head text-center"><p>SD</p></th>
+<th class="head text-center"><p>ESP32 Pin</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>D0</p></td>
+<td class="text-center"><p>PIN5</p></td>
+<td class="text-center"><p>CLK</p></td>
+<td class="text-center"><p>PIN14</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D1</p></td>
+<td class="text-center"><p>PIN18</p></td>
+<td class="text-center"><p>CMD</p></td>
+<td class="text-center"><p>PIN15</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D2</p></td>
+<td class="text-center"><p>PIN19</p></td>
+<td class="text-center"><p>DATA0</p></td>
+<td class="text-center"><p>PIN2</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D3</p></td>
+<td class="text-center"><p>PIN21</p></td>
+<td class="text-center"><p>DATA1/LED</p></td>
+<td class="text-center"><p>PIN4</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D4</p></td>
+<td class="text-center"><p>PIN36</p></td>
+<td class="text-center"><p>DATA2</p></td>
+<td class="text-center"><p>PIN12</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D5</p></td>
+<td class="text-center"><p>PIN39</p></td>
+<td class="text-center"><p>DATA3</p></td>
+<td class="text-center"><p>PIN13</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>D6</p></td>
+<td class="text-center"><p>PIN34</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>D7</p></td>
+<td class="text-center"><p>PIN35</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>XCLK</p></td>
+<td class="text-center"><p>PIN0</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>PCLK</p></td>
+<td class="text-center"><p>PIN22</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>VSYNC</p></td>
+<td class="text-center"><p>PIN25</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>HREF</p></td>
+<td class="text-center"><p>PIN23</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>SDA</p></td>
+<td class="text-center"><p>PIN26</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>SCL</p></td>
+<td class="text-center"><p>PIN27</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>POWER PIN</p></td>
+<td class="text-center"><p>PIN32</p></td>
+<td class="text-center"><p></p></td>
+<td class="text-center"><p></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="motor-driver-board-introduction">
+<h1>3. Motor Driver Board Introduction<a class="headerlink" href="#motor-driver-board-introduction" title="Link to this heading"></a></h1>
+<p><strong>(1). Introduction</strong></p>
+<p>The motor driver board is designed for the ESP32-CAM video car, which boasts an automatic download circuit to download code for the ESP32-CAM via a USB cable. It also integrates a battery charging function and we can charge via a USB cable. What’s more, four LEDs are used as power display.</p>
+<p>Discharge while charging is not supported. When the charging IC detects that there is a load consuming power, it will interrupt the charging function and change it to discharging function.  Thus if we need to charge, we only need to turn the switch OFF and plug in the USB cable.</p>
+<p>We use the IIC method(use two pins) to control the motor. The specific principle is that we write code to receive IIC signal on a STC8G1K08 control chip of the motor driver board, then the ESP32-CAM sends the IIC signal to enable the two chips to communicate with the IIC. Thus the ESP32-CAM is capable of controlling the chip to output PWM signal to the HR8833 motor driver IC via the IIC communication in a way that controls the motor.</p>
+<p style="color:red">Note：ESP32-CAM can't use the SD card function when used together with the motor driver board due to pin conflict.</p>
+<p><img alt="图 (1)" src="../_images/321321321.jpg" /></p>
+<p><strong>(2). Parameters</strong></p>
+<ol class="arabic simple">
+<li><p>Serial IC: CH340C</p></li>
+<li><p>Motor driver IC: HR8833</p></li>
+<li><p>Charging IC: ETA9740</p></li>
+<li><p>USB voltage / charging voltage: 5V</p></li>
+<li><p>Working voltage: 3.3V</p></li>
+<li><p>Dimensions: 115*100mm</p></li>
+<li><p>Battery model: 16340 3.7V lithium battery (not provide)</p></li>
+</ol>
+<p><strong>(3). Pinout</strong></p>
+<p><img alt="ESP32-CAM-Motor" src="../_images/ESP32-CAM-Motor.png" /></p>
+<p><strong>(4). Schematic Diagram</strong></p>
+<p><img alt="Sheet1-1" src="../_images/Sheet1-1.png" /></p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="about-arduino-ide">
+<h1>4. About Arduino IDE<a class="headerlink" href="#about-arduino-ide" title="Link to this heading"></a></h1>
+<section id="download-arduino-ide">
+<h2>(1).Download Arduino IDE<a class="headerlink" href="#download-arduino-ide" title="Link to this heading"></a></h2>
+<section id="a-windows-system">
+<h3>A.Windows System<a class="headerlink" href="#a-windows-system" title="Link to this heading"></a></h3>
+<p>Step 1: You could download Arduino IDE from the official website：<a class="reference external" href="https://www.arduino.cc/">https://www.arduino.cc/</a></p>
+<p>Step 2: Enter the link and click <strong>SOFTWARE</strong>:</p>
+<p><img alt="4-1-1" src="../_images/4-1-A-1.png" /></p>
+<p>Step 3: There are various versions of IDE for Arduino. Just download a version compatible with your system. Here we will show you how to download and install the windows version of Arduino IDE.</p>
+<p>Tap “<strong>Windows</strong> win 10 and newer 64 bits”</p>
+<p><img alt="image-20240110132702393" src="../_images/4-1-A-2.png" /></p>
+<p>Step 4: You just need to click <strong>JUST DOWNLOAD</strong>.</p>
+<p><img alt="image-20240110133136491" src="../_images/4-1-A-3.png" /></p>
+<p>Step 5: After the download is complete, we will get the .exe file, as shown below:</p>
+<p><img alt="image-20240110134400456" src="../_images/4-1-A-4.png" /></p>
+<p>Step 6：Right-click “arduino-ide_2.2.1_Windows_64bit.exe” and tap “<strong>Open</strong>”.</p>
+<p><img alt="8e51243ee6d572cb42abe7e1ed03b02b" src="../_images/4-1-A-5.png" /></p>
+<p>Step 7：Tap “<strong>I Agree</strong>”.</p>
+<p><img alt="52bdc1e74fcb4afc269f98438655a0c9" src="../_images/4-1-A-6.png" /></p>
+<p>Step 8：Tap “<strong>Next</strong>”</p>
+<p><img alt="6f8da7951e9095f74e5e8646c8ac4964" src="../_images/4-1-A-7.png" /></p>
+<p>Step 9：First click ① “<strong>Browse…</strong>” to set the installation path of Arduino IDE, then click ② “<strong>Install</strong>”.</p>
+<p><img alt="5df602d0079a781b847e06618f05b07d" src="../_images/4-1-A-8.png" /></p>
+<p>Step 10：Wait for installation to complete.</p>
+<p><img alt="e82f43e5455ad703473c3eed94eadaa3" src="../_images/4-1-A-9.png" /></p>
+<p>Step 11：Click “<strong>Run Arduino IDE</strong>” and “<strong>Finish</strong>”.</p>
+<p><img alt="7b6cfc69ac09809ab551c31093614378" src="../_images/4-1-A-10.png" /></p>
+</section>
+<section id="b-mac-system">
+<h3>B. MAC System<a class="headerlink" href="#b-mac-system" title="Link to this heading"></a></h3>
+<p>Just download a version compatible with your computer system.</p>
+<p><img alt="image-20240110143230136" src="../_images/4-1-B-1.png" /></p>
+</section>
+</section>
+<section id="install-esp32-development-environment">
+<h2>(2).Install ESP32 Development Environment<a class="headerlink" href="#install-esp32-development-environment" title="Link to this heading"></a></h2>
+<section id="a-install-it-on-arduino-ide">
+<h3>A：Install it on Arduino IDE<a class="headerlink" href="#a-install-it-on-arduino-ide" title="Link to this heading"></a></h3>
+<p style="color:red">The following is a Windows system tutorial, MAC system can refer to it</p>
+<p>Typically, we cannot find ESP32 board from “Board” in “Tools”. Because we have not install this board on Arduino IDE yet.</p>
+<p><img alt="123-1698638335889-4" src="../_images/4-2-A-1.png" /></p>
+<p>Here are the procedures of ESP32 board installation:</p>
+<p>Open Arduino IDE.</p>
+<p>Click “<strong>File</strong> ——&gt;<strong>Preferences</strong>”</p>
+<p><img alt="image-20240111154110083" src="../_images/4-2-A-6.png" /></p>
+<p>Copy the link of ESP32 board：“https://espressif.github.io/arduino-esp32/package_esp32_index.json” to Additional boards manager URLs and tap OK.</p>
+<p><img alt="image-20240111155552488" src="../_images/4-2-A-2.png" /></p>
+<p>Click the icon of “Board Manager” to check for boards.</p>
+<p><img alt="image-20240111155742209" src="../_images/4-2-A-3.png" /></p>
+<p>In the search bar, type in ESP32 and search to install the latest version. Then you just need to wait a few minutes for the installation to complete.</p>
+<p><strong>During installing, please ensure the stability of network. If it fails, please operate last step again to re-install it.</strong></p>
+<p><img alt="image-20240111155925696" src="../_images/4-2-A-4.png" /></p>
+<p>After installation, select the correct board model.</p>
+<p style="color:red">Note: The development board used on the video car must be “AI Thinker ESP32-CAM”</p>
+<p><img alt="image-20240111160216761" src="../_images/4-2-A-5.png" /></p>
+</section>
+<section id="b-download-the-provided-offline-installation-package">
+<h3>B：Download the provided offline installation package<a class="headerlink" href="#b-download-the-provided-offline-installation-package" title="Link to this heading"></a></h3>
+<p style="color:red">This method is suitable for unstable networks and slow online downloads, and can put the offline package on a USB flash drive to install the ESP32 development environment for more Arduino IDEs.</p>
+<p style="color:red">Note: This method only works on Windoes system</p>
+<p>Click the link to download the ESP32 offline installation package：<a class="reference external" href="https://fs.keyestudio.com/esp32_package_2_0_12">ESP32 Package 2.0.12</a></p>
+<p>After the download is complete, unzip it and you will get a file named “<strong>esp32_package_2.0.12_arduinome.exe</strong>”.</p>
+<p><img alt="332c224abca5108481fd6a31a16b433d" src="../_images/4-2-B-1.png" /></p>
+<p><img alt="image-20240110145330967" src="../_images/4-2-B-2.png" /></p>
+<p>Tap “<strong>Open</strong>”.</p>
+<p><img alt="image-20240110145537688" src="../_images/4-2-B-3.png" /></p>
+<p>Wait for the installation to complete, then restart the Arduino IDE to see the options for the ESP32 development board.</p>
+<p><img alt="image-20240110145656434" src="../_images/4-2-B-4.png" /></p>
+<p><img alt="image-20240111160216761" src="../_images/4-2-A-5.png" /></p>
+</section>
+</section>
+<section id="install-the-ch340-driver-on-your-computer">
+<h2>(3).Install the CH340 driver on your computer<a class="headerlink" href="#install-the-ch340-driver-on-your-computer" title="Link to this heading"></a></h2>
+<p>(1).Windows System</p>
+<p>Enter the link：<a class="reference external" href="https://getting-started-with-arduino.readthedocs.io/en/latest/windowsCH340.html">Install CH340 Driver on Windows System — Getting started with Arduino documentation (getting-started-with-arduino.readthedocs.io)</a></p>
+<p>(2).MAC System</p>
+<p>Enter the link：<a class="reference external" href="https://getting-started-with-arduino.readthedocs.io/en/latest/MacCH340.html">Install CH340 Driver on MAC System — Getting started with Arduino documentation (getting-started-with-arduino.readthedocs.io)</a></p>
+</section>
+<section id="upload-code-to-esp32-cam-board-via-arduino-ide">
+<h2>(4).Upload code to ESP32-CAM board via Arduino IDE<a class="headerlink" href="#upload-code-to-esp32-cam-board-via-arduino-ide" title="Link to this heading"></a></h2>
+<p><strong>A. Arduino IDE Interface</strong></p>
+<p><img alt="image-20230531113348119" src="../_images/image-20230531113348119.png" /></p>
+<ol class="arabic simple">
+<li><p>“File”: Including New Sketch, Open…, Sketchbook, Examples, Close, Save(Save as…), Preferences, Advanced…, etc.</p></li>
+<li><p>“Edit”: Including Copy, Paste, Auto Format, Increase/Decrease Font Size, etc. Commonly, you can use shortcuts to do these operations.</p></li>
+<li><p>“Sketch”: Including Verify/Compile, Upload, Include Library, etc.</p></li>
+<li><p>“Tools”: Including Board and Port, which are two of the most important functions.</p></li>
+<li><p>“Help”: Including Check for Updates as well as some official data references.</p></li>
+<li><p>“Serial Plotter”: To display the data from serial port in the way of a line chart.</p></li>
+<li><p>“Serial Monitor”: To prints the data from serial port.</p></li>
+<li><p>Verify code.</p></li>
+<li><p>Verify and upload code.</p></li>
+<li><p>“Sketchbook”: To create a new sketch, or sign in to Arduino Cloud to sync and edit your Cloud Sketches.</p></li>
+<li><p>“Boards Manager”: To install or remove development board.</p></li>
+<li><p>“Library Manager”: To install or remove library.</p></li>
+<li><p>“Debug”: To monitor code and debug breakpoints.</p></li>
+<li><p>Search.</p></li>
+<li><p>Sketch editing area.</p></li>
+<li><p>IDE Output: To report error or successful uploading, and to display data from serial monitor.</p></li>
+</ol>
+<p><strong>B. Upload code</strong></p>
+<p><img alt="46541645156" src="../_images/46541645156.png" /></p>
+<p>After selecting the development board, we need to select the COM port. After the development board installs the driver, a COM port will be displayed. If you don’t know which one to select, you can enter the device manager of your computer to check, as shown below: (If there are multiple COM ports and  you don’t know which one it is, you can unplug the development board and see which one disappears. Then plug in the development board and the missing COM port will be displayed again. If there is no COM, please check whether the development board driver is installed.)</p>
+<p><img alt="wps11" src="../_images/4-3-1.jpg" /></p>
+<p>As can be seen from the picture, our COM port is COM3. We select “Port” in the “Tools” and then select “COM3”.</p>
+<p><img alt="666666" src="../_images/4-3-2.png" /></p>
+<p>After connecting the development board, then we need to add code, here we provide a sample code, the function of the code is to print “Hello Keyestudio!” every second in the serial monitor.</p>
+<p>Copy and paste the following code into the code area of arduino IDE.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">  keyestudio </span>
+<span class="cm">  Print “Hello Keyestudio!”</span>
+<span class="cm">  http://www.keyestudio.com</span>
+<span class="cm">*/</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">  </span>
+<span class="w">    </span><span class="c1">// put your setup code here, to run once:</span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">9600</span><span class="p">);</span><span class="w">  </span><span class="c1">//Set the serial port baud rate to 9600</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span><span class="w">  </span>
+<span class="w">    </span><span class="c1">// put your main code here, to run repeatedly:</span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;Hello Keyestudio!&quot;</span><span class="p">);</span><span class="w">  </span><span class="c1">//Serial port printing</span>
+<span class="w"> 	</span><span class="n">delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span><span class="w">  </span><span class="c1">//Delay of 1 second</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><img alt="image-20230531191328700-1704869009005-1" src="../_images/4-3-3.png" /></p>
+<p>Tap<img alt="image-20230531164208065" src="../_images/4-3-4.png" />to compile and upload the code. After the upload is successful, the prompts will appear, as shown in the figure:</p>
+<p><img alt="image-20230531191624712" src="../_images/4-3-5.png" /></p>
+<p>Then tap<img alt="image-20230601084439425" src="../_images/4-3-6.png" />to open the serial port monitor to set the baud rate to 9600, and you will see that the serial port printing the string “Hello Keyestudio!”.</p>
+<p><img alt="232323233" src="../_images/4-3-7.png" /></p>
+<ol class="arabic simple">
+<li><p>“Toggle Autoscroll”: Set whether the print window follows printing</p></li>
+<li><p>“Toggle Timestamp ”: Set whether to display printing time</p></li>
+<li><p>“Clear Output”: Clear data in print window</p></li>
+<li><p>Serial port input box</p></li>
+<li><p>Serial port sending format</p></li>
+<li><p>Set the baud rate, click it to select the required baud rate</p></li>
+<li><p>Print window</p></li>
+</ol>
+<p>Now, please return to the main tutorial to learn how to add library files to Arduino IDE, otherwise the IDE will report an error.</p>
+</section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="control-the-leds-of-the-car">
+<h1>5. Control the LEDs of the Car<a class="headerlink" href="#control-the-leds-of-the-car" title="Link to this heading"></a></h1>
+<p><strong>(1).Description</strong></p>
+<p>The video car is equipped with two 10mm headlights. We will control the two LEDs with one pin, so that the status of the two LEDs is synchronized. No wiring is required, just plug the ESP32-CAM development board into the motor driver board of the video car.</p>
+<p><strong>(2).Working Principle</strong></p>
+<p>As can be seen from the schematic diagram, we connect the LED directly to the VCC of  5V, then we will use the triode Q1 as a switch. When the pin 1 of Q1 (IO12 pin of the ESP32-CAM) outputs high level, the pin 3 and pin 2 of Q1 are conducting (when the output is low level, pins 3 and 2 are not conducting), the VCC of 5V passes through the LED to the R13 current limiting resistor and then goes from pin 3 to pin 2 to GND to form a loop. (R15 is a current-limiting resistor, and R12 is a pull-down resistor to prevent the LED from being unstable when IO12 is in a high-impedance state).</p>
+<p><img alt="image-20240125100853016" src="../_images/image-20240125100853016.png" /></p>
+<p><strong>(3).Code</strong></p>
+<p>Tap it to download the code：<a class="reference download internal" download="" href="../_downloads/a657a4618e202a2cac7abcc6b234b31b/Codes.zip"><span class="xref download myst">Codes</span></a></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">  Keyestudio ESP32-CAM Video Smart Car</span>
+<span class="cm">  Control LED Flashing</span>
+<span class="cm">  https://www.keyestudio.com</span>
+<span class="cm">*/</span>
+<span class="cp">#define LED 12  </span><span class="c1">//Define LED as 12 pin</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// put your setup code here, to run once:</span>
+<span class="w">  </span><span class="n">pinMode</span><span class="p">(</span><span class="n">LED</span><span class="p">,</span><span class="n">OUTPUT</span><span class="p">);</span><span class="w">  </span><span class="c1">//Set IO12 pin as output</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// put your main code here, to run repeatedly:</span>
+<span class="w">  </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">LED</span><span class="p">,</span><span class="n">HIGH</span><span class="p">);</span><span class="w">   </span><span class="c1">//IO12 pin outputs high level</span>
+<span class="w">  </span><span class="n">delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span><span class="w">              </span><span class="c1">//delay 1s</span>
+<span class="w">  </span><span class="n">digitalWrite</span><span class="p">(</span><span class="n">LED</span><span class="p">,</span><span class="n">LOW</span><span class="p">);</span><span class="w">    </span><span class="c1">//IO12 pin outputs low level</span>
+<span class="w">  </span><span class="n">delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span><span class="w">              </span><span class="c1">//delay 1s</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>(4).Test Result</strong></p>
+<p>After the code is uploaded successfully, the LEDs light up for 1s and turn off for 1s.</p>
+<p><strong>(5).Code Explanation</strong></p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">#define</span> <span class="pre">LED</span> <span class="pre">12</span> </code>Define a constant called LED with a value of 12.</p></li>
+</ol>
+<p>​	The form of defining a constant is：<code class="docutils literal notranslate"><span class="pre">#define</span> <span class="pre">constantName</span> <span class="pre">value</span></code></p>
+<p>​	<strong>constantName</strong>: the name of the macro to define.
+​		<strong>value</strong>: the value to assign to the macro.</p>
+<p>​	Official explanation link：<a class="reference external" href="https://www.arduino.cc/reference/en/language/structure/further-syntax/define/">#define - Arduino Reference</a></p>
+<ol class="arabic simple" start="2">
+<li><p><code class="docutils literal notranslate"><span class="pre">pinMode(LED,OUTPUT);</span></code> Set pin mode</p></li>
+</ol>
+<p>The form of setting the pin mode：<code class="docutils literal notranslate"><span class="pre">pinMode(Pin,mode);</span></code></p>
+<p>​	<code class="docutils literal notranslate"><span class="pre">pin</span></code>: the Arduino pin number to set the mode of.
+​		<code class="docutils literal notranslate"><span class="pre">mode</span></code>: <code class="docutils literal notranslate"><span class="pre">INPUT</span></code>, <code class="docutils literal notranslate"><span class="pre">OUTPUT</span></code>, or <code class="docutils literal notranslate"><span class="pre">INPUT_PULLUP</span></code>. See the <a class="reference external" href="http://arduino.cc/en/Tutorial/DigitalPins">Digital Pins</a> page for a more complete description of the functionality.</p>
+<p>​	Official explanation link：<a class="reference external" href="https://www.arduino.cc/reference/en/language/functions/digital-io/pinmode/">pinMode() - Arduino Reference</a></p>
+<ol class="arabic simple" start="3">
+<li><p><code class="docutils literal notranslate"><span class="pre">digitalWrite(LED,HIGH);</span></code> Control pin to output high and low level</p></li>
+</ol>
+<p>​	The form of controlling pin output：<code class="docutils literal notranslate"><span class="pre">digitalWrite(Pin,value);</span></code></p>
+<p>​	<code class="docutils literal notranslate"><span class="pre">pin</span></code>: the Arduino pin number.
+​		<code class="docutils literal notranslate"><span class="pre">value</span></code>: <code class="docutils literal notranslate"><span class="pre">HIGH</span></code> or <code class="docutils literal notranslate"><span class="pre">LOW</span></code>.</p>
+<p>​	Official explanation link：<a class="reference external" href="https://www.arduino.cc/reference/en/language/functions/digital-io/digitalwrite/">digitalWrite() - Arduino Reference</a></p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="control-the-brightness-of-leds">
+<h1>6. Control the Brightness of LEDs<a class="headerlink" href="#control-the-brightness-of-leds" title="Link to this heading"></a></h1>
+<p><strong>(1).Description</strong></p>
+<p>A “breathing LED” is a phenomenon where an LED’s brightness smoothly changes from dark to bright and back to dark, continuing to do so and giving the illusion of an LED“breathing. Thus how to control LED’s brightness? We need to use the PWM of ESP32 to achieve it.</p>
+<p><img alt="image-20240113080822039" src="../_images/image-20240113080822039.png" /></p>
+<p><strong>(2). Working Principle of PWM</strong></p>
+<p><strong>Analog &amp; Digital：</strong></p>
+<p>Analog signal are continuous signals in both time and value. On the contrary, a digital signal or discrete time signal is a time series consisting of a sequence of quantities. Most signals in life are analog signals. A familiar example of an analog signal would be how the temperature throughout the day continuously changes and could not change instantaneously from 0℃ to 10℃.</p>
+<p>However, digital signals can instantaneously change in value. This change is expressed in numbers as 1 and 0 (the basis of binary code). Their differences can be seen more easily when compared, as shown below:</p>
+<p><img alt="img" src="../_images/wps1.jpg" /></p>
+<p><strong>PWM：</strong></p>
+<p>PWM, Pulse-Width Modulation, is a very effective method for using digital signals to control analog circuits. Common processors cannot directly output analog signals. PWM technology makes it very convenient to achieve this conversion (translation of digital to analog signals).</p>
+<p>PWM technology uses digital pins to send certain frequencies of square waves, that is, the output of high levels and low levels, which alternately last for a while. The total time for each set of high levels and low levels is generally fixed, which is called the period (Note: the reciprocal of the period is frequency). The time of high level outputs is generally called “pulse width”, and the duty cycle is the percentage of pulse width (PW) to the total period (T) of the waveform.</p>
+<p>The longer the output of high levels last, the longer the duty cycle and the higher the corresponding voltage in the analog signal will be. The following figures show how the analog signal voltages vary between 0V-3.3V(high level is 3.3V) corresponding to the pulse width 0%-100%:</p>
+<p><img alt="imgimg" src="../_images/wps2.jpg" /></p>
+<p>The longer the PWM duty cycle is, the higher the output power will be. Therefore, we can use PWM to control the brightness of an LED or the speed of DC motor and so on. It is evident from the above that PWM is not real analog, and the effective value of the voltage is equivalent to the corresponding analog. Then we can control the output power of the LED and other output modules to achieve different effects.</p>
+<p><strong>ESP32 and PWM</strong></p>
+<p>On ESP32, the LEDC(PWM) controller has 16 separate channels, each of which can independently control frequency, duty cycle, and even accuracy. Unlike traditional PWM pins, the PWM output pins of ESP32 are configurable, with one or more PWM output pins per channel. The relationship between the maximum frequency and bit precision is shown in the following formula.</p>
+<p><img alt="img" src="../_images/wps3.jpg" /></p>
+<p>The maximum value of bit is 31. For example, generate a PWM with an 8-bit precision (28=256. Values range from 0 to 255) with a maximum frequency of 80,000,000/255 = 312,500Hz.）</p>
+<p><strong>Method for Arduino output PWM：</strong></p>
+<p><strong>Method 1：</strong></p>
+<p>​	Use <code class="docutils literal notranslate"><span class="pre">analogicWrite</span> <span class="pre">(Pin,</span> <span class="pre">value)</span></code> The function can directly output PWM.</p>
+<p>​	Pin：Pin for outputting PWM</p>
+<p>​	value：Output PWM value</p>
+<p>​	refer to the link：<a class="reference external" href="https://www.arduino.cc/reference/en/language/functions/analog-io/analogwrite/">analogWrite() - Arduino Reference</a></p>
+<p><strong>(3).Code</strong></p>
+<p>Tap it to download the code：<a class="reference download internal" download="" href="../_downloads/a657a4618e202a2cac7abcc6b234b31b/Codes.zip"><span class="xref download myst">Codes</span></a></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">  Keyestudio ESP32-CAM Video Smart Car</span>
+<span class="cm">  Control the brightness of LED</span>
+<span class="cm">  https://www.keyestudio.com</span>
+<span class="cm">*/</span>
+<span class="cp">#define LED 12  </span><span class="c1">//Define LED as 12 pin</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// put your setup code here, to run once:</span>
+<span class="w">  </span><span class="n">pinMode</span><span class="p">(</span><span class="n">LED</span><span class="p">,</span><span class="n">OUTPUT</span><span class="p">);</span><span class="w"> </span><span class="c1">//Set pin mode to output</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// put your main code here, to run repeatedly:</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">255</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">//for loop, control i to increase from 0 to 255</span>
+<span class="w">    </span><span class="n">analogWrite</span><span class="p">(</span><span class="n">LED</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span><span class="w">               </span><span class="c1">//output pwm</span>
+<span class="w">    </span><span class="n">delay</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">255</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">--</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">//for loop, control i to decrease from 255 to 0</span>
+<span class="w">    </span><span class="n">analogWrite</span><span class="p">(</span><span class="n">LED</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span><span class="w">               </span><span class="c1">//output pwm</span>
+<span class="w">    </span><span class="n">delay</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+
+</pre></div>
+</div>
+<p><strong>(4).Test Result</strong></p>
+<p>After the code is uploaded successfully, the LEDs slowly turn from dark to bright and then from bright to dark.</p>
+<p><strong>(5).Code Explanation</strong></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">255</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">//for loop, control i to increase from 0 to 255</span>
+<span class="w">    </span><span class="n">analogWrite</span><span class="p">(</span><span class="n">LED</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">);</span><span class="w">                </span><span class="c1">//output pwm</span>
+<span class="w">    </span><span class="n">delay</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">for(int</span> <span class="pre">i</span> <span class="pre">=</span> <span class="pre">0;</span> <span class="pre">i</span> <span class="pre">&lt;</span> <span class="pre">255;</span> <span class="pre">i++)</span></code>：<code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">i</span> <span class="pre">=</span> <span class="pre">0</span></code> in the bracket is the starting value of the loop, <code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">&lt;</span> <span class="pre">255</span></code> is the loop condition. When the loop condition is not met, the for loop will exit. <code class="docutils literal notranslate"><span class="pre">i++</span></code> will add 1 to the value of i every time it loops. The loop will exit when the value of i reaches 256.</p>
+<p><code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">(int</span> <span class="pre">i</span> <span class="pre">=</span> <span class="pre">255;</span> <span class="pre">i</span> <span class="pre">&gt;</span> <span class="pre">1;</span> <span class="pre">i--)</span></code>：The loop is the opposite of the above, the starting value is 255, <code class="docutils literal notranslate"><span class="pre">i--</span></code> decreases the value of i by 1 every time it loops, and exits the loop when the value of i is 0.</p>
+<p>For details, refer to the link：<a class="reference external" href="https://www.arduino.cc/reference/en/language/structure/control-structure/for/">for - Arduino Reference</a></p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="motor-drive-mode">
+<h1>7. Motor Drive Mode<a class="headerlink" href="#motor-drive-mode" title="Link to this heading"></a></h1>
+<p><strong>(1).Description</strong></p>
+<p>We use IIC to control the motor driver, thus saving several pins for expansion.</p>
+<p><strong>(2).Working Principle</strong></p>
+<p>ESP32-CAM serves as the host and STC8G1K08 serves as the slave for IIC communication. The ESP32-CAM controls STC8G1K08 to output PWM signals to DR8833 via IIC in a way that controls the rotation of the motor. If you are interested in the principles of IIC communication, you can search for relevant information online. We have encapsulated it here and you can use the function directly.</p>
+<p><strong>Functions in SetMotor.h library：</strong></p>
+<p><code class="docutils literal notranslate"><span class="pre">i2c_init();</span></code>Initialize the IIC function. When using a motor driver, you must add this function.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Car_forward(value1,</span> <span class="pre">value2);</span></code>Car forward function, value1 is the forward speed value of the right wheel, value2 is the forward speed value of the left wheel.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Car_backwards(value1,</span> <span class="pre">value2);</span></code>Car retreat function, value1 is the speed value of the right wheel retreating, value2 is the speed value of the left wheel retreating.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Car_left(value1,</span> <span class="pre">value2);</span></code>Car left turn function, value1 is the forward speed value of the right wheel, value2 is the backward speed value of the left wheel.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Car_right(value1,</span> <span class="pre">value2);</span></code>Car right turn function, value1 is the backward speed value of the right wheel, value2 is the forward speed value of the left wheel.</p>
+<p><code class="docutils literal notranslate"><span class="pre">Car_stop();</span></code>Car stop function.</p>
+<p><strong>(3).Code</strong></p>
+<p>Tap it to download the code：<a class="reference download internal" download="" href="../_downloads/a657a4618e202a2cac7abcc6b234b31b/Codes.zip"><span class="xref download myst">Codes</span></a></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">  Keyestudio ESP32-CAM Video Smart Car</span>
+<span class="cm">  Motor Driver</span>
+<span class="cm">  https://www.keyestudio.com</span>
+<span class="cm">*/</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;SetMotor.h&quot;</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// put your setup code here, to run once:</span>
+<span class="w">  </span><span class="n">i2c_init</span><span class="p">();</span><span class="w">  </span><span class="c1">//initialize iic</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// put your main code here, to run repeatedly:</span>
+<span class="w">  </span><span class="n">Car_forward</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">);</span><span class="w">    </span><span class="c1">//The car moves forward</span>
+<span class="w">  </span><span class="n">delay</span><span class="p">(</span><span class="mi">2000</span><span class="p">);</span><span class="w">              </span><span class="c1">//delay 2s</span>
+<span class="w">  </span><span class="n">Car_backwards</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">);</span><span class="w">  </span><span class="c1">//The car moves back</span>
+<span class="w">  </span><span class="n">delay</span><span class="p">(</span><span class="mi">2000</span><span class="p">);</span>
+<span class="w">  </span><span class="n">Car_left</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span><span class="w">  </span><span class="c1">//The car turns left</span>
+<span class="w">  </span><span class="n">delay</span><span class="p">(</span><span class="mi">2000</span><span class="p">);</span>
+<span class="w">  </span><span class="n">Car_right</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">);</span><span class="w">  </span><span class="c1">//The car turns right</span>
+<span class="w">  </span><span class="n">delay</span><span class="p">(</span><span class="mi">2000</span><span class="p">);</span>
+<span class="w">  </span><span class="n">Car_stop</span><span class="p">();</span><span class="w">  </span><span class="c1">//The car stops</span>
+<span class="w">  </span><span class="n">delay</span><span class="p">(</span><span class="mi">2000</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>(4).Test Result</strong></p>
+<p>After the code is uploaded successfully, the car moves forward for 2s, goes back for 2s, turns left for 2s, turns right for 2s, then stops for 2s.</p>
+<p><strong>(5).Code Explanation</strong></p>
+<p><code class="docutils literal notranslate"><span class="pre">#include</span> <span class="pre">&quot;SetMotor.h&quot;</span></code>: This code includes the “SetMotor.h” file we write, so that the code integrated in SetMotor.h can be called.</p>
+<p>Official explanation link：<a class="reference external" href="https://www.arduino.cc/reference/en/language/structure/further-syntax/include/">#include - Arduino Reference</a></p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="video-smart-car">
+<h1>8. Video Smart Car<a class="headerlink" href="#video-smart-car" title="Link to this heading"></a></h1>
+<p><strong>(1).Description</strong></p>
+<p>The ESP32-CAM development board boasts a camera and wifi function. Video signals are transmitted to the control end (mobile phone or computer) through wifi, and the control signals from the control end are also transmitted to ESP32-CAM through wifi. The APP control method is abandoned and enter the IP printed by the serial port of the car on the browser of the control end, then we are able to enter the control page.</p>
+<p><strong>(2).Function</strong></p>
+<p>The ESP32-CAM development board boasts Wi-Fi (2.4G) and Bluetooth (4.2) functions, which can be easily connected to the Wi-Fi network and communicate with other devices in the network. You can use the ESP32-CAM to display the webpage in the browser.</p>
+<p><strong>arduino IDE provides &lt;WiFi.h&gt;library files，Wi-Fi library supports configuration and monitoring of ESP32 Wi-Fi networking functions.</strong></p>
+<ul class="simple">
+<li><p>Base station mode (STA mode or Wi-Fi client mode), when ESP32 is connected to a Wi-Fi hotspot (AP).</p></li>
+<li><p>AP mode (Soft-AP mode or Wi-Fi hotspot mode), when other Wi-Fi devices are connected to the ESP32.</p></li>
+<li><p>AP-STA coexistence mode (ESP32 is both a Wi-Fi hotspot and a Wi-Fi device connected to another Wi-Fi hotspot).</p></li>
+<li><p>The above modes support multiple security modes (WPA, WPA2 and WEP).</p></li>
+<li><p>Search Wi-Fi hotspots (including active scanning and passive scanning).</p></li>
+<li><p>Support promiscuous mode monitoring of IEEE802.11 Wi-Fi packets.</p></li>
+</ul>
+<p>For more wifi reference, please go to Espressif’s official documentation：<a class="reference external" href="https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/network/esp_wifi.html">https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/network/esp_wifi.html</a></p>
+<p>Official link for Espressif：<a class="reference external" href="https://www.espressif.com.cn/en/home">https://www.espressif.com.cn/en/home</a></p>
+<p><strong>Webpage introduction：</strong></p>
+<p><img alt="Website Introduction1" src="../_images/Website-Introduction1.png" /></p>
+<p><strong>Operation animation example：</strong></p>
+<p style="color:red">A problem that often occurs when using the web version is that long-pressing the browser page will enter the recognition mode, so how should we solve it? If you need to move forward, first click the forward button and then press the left or right turn button while holding the forward button, so that you will not enter the recognition mode.</p>
+<p><img alt="OperationVideo" src="../_images/OperationVideo.gif" /></p>
+<p><strong>(3).Code</strong></p>
+<p style="color:red">Note: It is prohibited to copy the code and upload it. You can only use the code file we provide to open the upload with Arduino IDE, otherwise errors will appear!</p>
+<p><strong>The following is the main code. The web page code, control car and video transmission codes are all in the <code class="docutils literal notranslate"><span class="pre">app_server.h</span></code> file. Since this knowledge involves extracurricular knowledge such as HTML, CSS and  JS, please consult the relevant information if you want to know more.</strong></p>
+<p>Tap it to download the code：<a class="reference download internal" download="" href="../_downloads/a657a4618e202a2cac7abcc6b234b31b/Codes.zip"><span class="xref download myst">Codes</span></a></p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="cm">/*</span>
+<span class="cm">  keyestudio  ESP32-CAM Video Smart Car</span>
+<span class="cm">  Define Network SSID &amp; Password</span>
+<span class="cm">  Set ap to 1 to use ESP32-CAM as Standalone Access Point with default IP 192.168.4.1</span>
+<span class="cm">  Set ap to 0 to connect to a router using DHCP with hostname espressif</span>
+<span class="cm">*/</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;WiFi.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;esp_wifi.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;esp_camera.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;soc/soc.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;soc/rtc_cntl_reg.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;SetMotor.h&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;app_server.h&quot;</span>
+
+<span class="c1">// bool ap = 0;  //When it is 1, esp32 turns on wifi, the mobile phone is connected, and the IP is 192.168.4.1; when it is 0, it is connected to wifi, and the IP needs to be obtained through serial port printing.</span>
+<span class="c1">// const char* ssid = &quot;ChinaNet_2.4G&quot;;        //AP Name or Router SSID</span>
+<span class="c1">// const char* password = &quot;ChinaNet@233&quot;;  //Password. Leave blank for open network.</span>
+
+<span class="kt">bool</span><span class="w"> </span><span class="n">ap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">ssid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;keyes1&quot;</span><span class="p">;</span><span class="w">        </span><span class="c1">//AP Name or Router SSID</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;88888888&quot;</span><span class="p">;</span><span class="w">  </span><span class="c1">//Password. Leave blank for open network.</span>
+
+
+<span class="c1">//AP Settings</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">11</span><span class="p">;</span><span class="w">       </span><span class="c1">// Channel for AP Mode</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">hidden</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">         </span><span class="c1">// Probably leave at zero</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">maxconnection</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w">  </span><span class="c1">// Only allow one device to connect</span>
+
+<span class="c1">// Camera Pin Definitions - Don&#39;t heckin&#39; touch.</span>
+<span class="cp">#define PWDN_GPIO_NUM 32</span>
+<span class="cp">#define RESET_GPIO_NUM -1</span>
+<span class="cp">#define XCLK_GPIO_NUM 0</span>
+<span class="cp">#define SIOD_GPIO_NUM 26</span>
+<span class="cp">#define SIOC_GPIO_NUM 27</span>
+<span class="cp">#define Y9_GPIO_NUM 35</span>
+<span class="cp">#define Y8_GPIO_NUM 34</span>
+<span class="cp">#define Y7_GPIO_NUM 39</span>
+<span class="cp">#define Y6_GPIO_NUM 36</span>
+<span class="cp">#define Y5_GPIO_NUM 21</span>
+<span class="cp">#define Y4_GPIO_NUM 19</span>
+<span class="cp">#define Y3_GPIO_NUM 18</span>
+<span class="cp">#define Y2_GPIO_NUM 5</span>
+<span class="cp">#define VSYNC_GPIO_NUM 25</span>
+<span class="cp">#define HREF_GPIO_NUM 23</span>
+<span class="cp">#define PCLK_GPIO_NUM 22</span>
+
+<span class="cp">#define LED_GPIO_NUM 12</span>
+
+<span class="c1">// Webserver / Controls Function</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">startCameraServer</span><span class="p">();</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); // Prevent brownouts by silencing them. You probably want to keep this.</span>
+<span class="w">  </span><span class="n">i2c_init</span><span class="p">();</span><span class="w">  </span><span class="c1">//Initialize IIC, SDA is IO14, SCL is IO13, the pins are bound to the motor driver board and cannot be modified.</span>
+
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">115200</span><span class="p">);</span>
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">setDebugOutput</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+<span class="w">  </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">();</span>
+
+<span class="w">  </span><span class="c1">// Camera Configuration - Again, don&#39;t touch.</span>
+<span class="w">  </span><span class="n">camera_config_t</span><span class="w"> </span><span class="n">config</span><span class="p">;</span>
+<span class="w">  </span><span class="n">config</span><span class="p">.</span><span class="n">ledc_channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LEDC_CHANNEL_0</span><span class="p">;</span>
+<span class="w">  </span><span class="n">config</span><span class="p">.</span><span class="n">ledc_timer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">LEDC_TIMER_0</span><span class="p">;</span>
+<span class="w">  </span><span class="n">config</span><span class="p">.</span><span class="n">pin_d0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Y2_GPIO_NUM</span><span class="p">;</span>
+<span class="w">  </span><span class="n">config</span><span class="p">.</span><span class="n">pin_d1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Y3_GPIO_NUM</span><span class="p">;</span>
+<span class="w">  </span><span class="n">config</span><span class="p">.</span><span class="n">pin_d2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Y4_GPIO_NUM</span><span class="p">;</span>
+<span class="w">  </span><span class="n">config</span><span class="p">.</span><span class="n">pin_d3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Y5_GPIO_NUM</span><span class="p">;</span>
+<span class="w">  </span><span class="n">config</span><span class="p">.</span><span class="n">pin_d4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Y6_GPIO_NUM</span><span class="p">;</span>
+<span class="w">  </span><span class="n">config</span><span class="p">.</span><span class="n">pin_d5</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Y7_GPIO_NUM</span><span class="p">;</span>
+<span class="w">  </span><span class="n">config</span><span class="p">.</span><span class="n">pin_d6</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Y8_GPIO_NUM</span><span class="p">;</span>
+<span class="w">  </span><span class="n">config</span><span class="p">.</span><span class="n">pin_d7</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Y9_GPIO_NUM</span><span class="p">;</span>
+<span class="w">  </span><span class="n">config</span><span class="p">.</span><span class="n">pin_xclk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">XCLK_GPIO_NUM</span><span class="p">;</span>
+<span class="w">  </span><span class="n">config</span><span class="p">.</span><span class="n">pin_pclk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PCLK_GPIO_NUM</span><span class="p">;</span>
+<span class="w">  </span><span class="n">config</span><span class="p">.</span><span class="n">pin_vsync</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">VSYNC_GPIO_NUM</span><span class="p">;</span>
+<span class="w">  </span><span class="n">config</span><span class="p">.</span><span class="n">pin_href</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">HREF_GPIO_NUM</span><span class="p">;</span>
+<span class="w">  </span><span class="n">config</span><span class="p">.</span><span class="n">pin_sscb_sda</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SIOD_GPIO_NUM</span><span class="p">;</span>
+<span class="w">  </span><span class="n">config</span><span class="p">.</span><span class="n">pin_sscb_scl</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SIOC_GPIO_NUM</span><span class="p">;</span>
+<span class="w">  </span><span class="n">config</span><span class="p">.</span><span class="n">pin_pwdn</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PWDN_GPIO_NUM</span><span class="p">;</span>
+<span class="w">  </span><span class="n">config</span><span class="p">.</span><span class="n">pin_reset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RESET_GPIO_NUM</span><span class="p">;</span>
+<span class="w">  </span><span class="n">config</span><span class="p">.</span><span class="n">xclk_freq_hz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20000000</span><span class="p">;</span>
+<span class="w">  </span><span class="n">config</span><span class="p">.</span><span class="n">pixel_format</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">PIXFORMAT_JPEG</span><span class="p">;</span>
+<span class="w">  </span><span class="c1">//init with high specs to pre-allocate larger buffers</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">psramFound</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">config</span><span class="p">.</span><span class="n">frame_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FRAMESIZE_QVGA</span><span class="p">;</span>
+<span class="w">    </span><span class="n">config</span><span class="p">.</span><span class="n">jpeg_quality</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="w">    </span><span class="n">config</span><span class="p">.</span><span class="n">fb_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">config</span><span class="p">.</span><span class="n">frame_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FRAMESIZE_QVGA</span><span class="p">;</span>
+<span class="w">    </span><span class="n">config</span><span class="p">.</span><span class="n">jpeg_quality</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">12</span><span class="p">;</span>
+<span class="w">    </span><span class="n">config</span><span class="p">.</span><span class="n">fb_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="c1">// camera init</span>
+<span class="w">  </span><span class="n">esp_err_t</span><span class="w"> </span><span class="n">err</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">esp_camera_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">config</span><span class="p">);</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">err</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">ESP_OK</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">//ESP_OK</span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Camera init failed with error 0x%x&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">err</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="c1">//drop down frame size for higher initial frame rate</span>
+<span class="w">  </span><span class="n">sensor_t</span><span class="o">*</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">esp_camera_sensor_get</span><span class="p">();</span>
+<span class="w">  </span><span class="n">s</span><span class="o">-&gt;</span><span class="n">set_framesize</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="n">FRAMESIZE_QVGA</span><span class="p">);</span>
+<span class="w">  </span><span class="c1">//Video flip code</span>
+<span class="w">  </span><span class="n">s</span><span class="o">-&gt;</span><span class="n">set_vflip</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">  </span><span class="n">s</span><span class="o">-&gt;</span><span class="n">set_hmirror</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">  </span><span class="c1">// s-&gt;set_vflip(s, 0);</span>
+<span class="w">  </span><span class="c1">// s-&gt;set_hmirror(s, 0);</span>
+
+<span class="w">  </span><span class="n">pinMode</span><span class="p">(</span><span class="n">LED_GPIO_NUM</span><span class="p">,</span><span class="n">OUTPUT</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">ap</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Connect to Router</span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;ssid: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">String</span><span class="p">)</span><span class="n">ssid</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;password: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">String</span><span class="p">)</span><span class="n">password</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;WiFi is Client Scout32&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">WiFi</span><span class="p">.</span><span class="n">mode</span><span class="p">(</span><span class="n">WIFI_STA</span><span class="p">);</span>
+<span class="w">    </span><span class="n">WiFi</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="n">ssid</span><span class="p">,</span><span class="w"> </span><span class="n">password</span><span class="p">);</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">WiFi</span><span class="p">.</span><span class="n">status</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">WL_CONNECTED</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="n">delay</span><span class="p">(</span><span class="mi">500</span><span class="p">);</span>
+<span class="w">      </span><span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;.&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;Camera Ready! Use &#39;http://&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">WiFi</span><span class="p">.</span><span class="n">localIP</span><span class="p">());</span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;&#39; to connect&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// Setup Access Point</span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;ssid: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">String</span><span class="p">)</span><span class="n">ssid</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;password: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="p">(</span><span class="n">String</span><span class="p">)</span><span class="n">password</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;WiFi is Standalone Scout32&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">WiFi</span><span class="p">.</span><span class="n">mode</span><span class="p">(</span><span class="n">WIFI_AP</span><span class="p">);</span>
+<span class="w">    </span><span class="n">WiFi</span><span class="p">.</span><span class="n">softAP</span><span class="p">(</span><span class="n">ssid</span><span class="p">,</span><span class="w"> </span><span class="n">password</span><span class="p">,</span><span class="w"> </span><span class="n">channel</span><span class="p">,</span><span class="w"> </span><span class="n">hidden</span><span class="p">,</span><span class="w"> </span><span class="n">maxconnection</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="s">&quot;Camera Ready! Use &#39;http://&quot;</span><span class="p">);</span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">print</span><span class="p">(</span><span class="n">WiFi</span><span class="p">.</span><span class="n">softAPIP</span><span class="p">());</span>
+<span class="w">    </span><span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span><span class="s">&quot;&#39; to connect&quot;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="c1">//Flash LED as ready indicator</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">analogWrite</span><span class="p">(</span><span class="n">LED_GPIO_NUM</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span><span class="w">  </span><span class="c1">// flash led</span>
+<span class="w">    </span><span class="n">delay</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+<span class="w">    </span><span class="n">analogWrite</span><span class="p">(</span><span class="n">LED_GPIO_NUM</span><span class="p">,</span><span class="w"> </span><span class="mi">255</span><span class="p">);</span>
+<span class="w">    </span><span class="n">delay</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="c1">//Start Webserver</span>
+<span class="w">  </span><span class="n">startCameraServer</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">loop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// put your main code here, to run repeatedly:</span>
+<span class="w">  </span><span class="n">delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+<span class="w">  </span><span class="c1">// Serial.printf(&quot;RSSi: %ld dBm\n&quot;,WiFi.RSSI());</span>
+
+<span class="p">}</span>
+
+</pre></div>
+</div>
+<p><strong>(4).Test Result</strong></p>
+<p>After uploading the code, the headlight on the car flashes and then turns on, which means that the network is successfully turned on. Turn on the mobile phone’s wifi and look for a wifi named “keyes1” to connect to, the password is “88888888”, after the connection is successful, open the mobile browser and enter IP: 192.168.4.1 to enter the control page.</p>
+<p>You can modify the ssid and password according to your own preferences.</p>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">ssid</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;keyes1&quot;</span><span class="p">;</span><span class="w">        </span><span class="c1">//AP Name or Router SSID</span>
+<span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;88888888&quot;</span><span class="p">;</span><span class="w">  </span><span class="c1">//Password. Leave blank for open network.</span>
+</pre></div>
+</div>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="gameplay-expansion-ideas">
+<h1>9. Gameplay Expansion Ideas<a class="headerlink" href="#gameplay-expansion-ideas" title="Link to this heading"></a></h1>
+<ol class="arabic">
+<li><p>The LEGO holes on both sides of the car’s driver board can be used to assemble LEGO.</p>
+<p><img alt="eca9b65c4da479c8be039ea1308a9ed7" src="../_images/eca9b65c4da479c8be039ea1308a9ed7.png" /></p>
+</li>
+<li><p>There are four GPIO ports for expanding sensors and  modules.</p></li>
+</ol>
+<p><img alt="image-20240218132219456" src="../_images/image-20240218132219456.png" /></p>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="common-problems">
+<h1>10. Common Problems<a class="headerlink" href="#common-problems" title="Link to this heading"></a></h1>
+<ol class="arabic simple">
+<li><p>Select the wrong development board. Many ESP32 series are compatible but the internal library files are different. For example, when uploading the video car code, the development board selects “<strong>ESP32 Dev Module”</strong>, then you can upload the code successfully, but the code does not run. So for our video car, we must choose “<strong>AI Thinker ESP32-CAM</strong>”.</p></li>
+<li><p>Turn on the switch and the battery indicator light does not light up. It may be that the battery is out of power. Just charge it.</p></li>
+<li><p>If you cannot see the serial port in the Arduino IDE after plugging in the USB, the first step is to check whether the CH340 driver is installed, the second step is to check whether the power switch of the car is turned on.</p></li>
+<li><p>The IP address cannot be entered: the first step is to check whether it is connected to the correct wifi. If AP=1, then the mobile phone or tablet needs to be connected to the wifi of esp32-cam; if AP=0, the wifi connected to esp32-cam must be connected, which must be consistent with the wifi connected to the mobile phone or tablet (you can also open a hotspot on the mobile phone or tablet to connect it to the esp32-cam).</p></li>
+</ol>
+<p>Note: When AP=1, the IP address is “192.168.4.1”. When AP=0, you need to obtain the IP address through the serial port, open the serial port of the arduino IDE and click reset button, then wait for the connection to wifi to get the IP.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../README.html" class="btn btn-neutral float-left" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright Shenzhen keyestudio Technology Co., Ltd.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
