@@ -79,6 +79,36 @@ def free_space(d, ref_rows=(0.82, 0.98), ref_cols=(0.33, 0.67),
     return {"left": out[0], "center": out[1], "right": out[2]}
 
 
+def free_space_debug(d, ref_rows=(0.82, 0.98), ref_cols=(0.33, 0.67),
+                     look_rows=(0.55, 0.78), pct_ahead=85, ratio_open=0.45, ratio_block=0.85):
+    """Same computation as free_space() but also exposes the intermediate
+    nearness values, the ratio each zone's openness is derived from, and the
+    fractional pixel bands used. Purely for visualization/tuning (dashboard);
+    free_space() stays the lean production path.
+    """
+    h, w = d.shape
+    ref = d[int(h * ref_rows[0]):int(h * ref_rows[1]), int(w * ref_cols[0]):int(w * ref_cols[1])]
+    ref_disp = float(np.percentile(ref, 90)) + 1e-6
+    lo = d[int(h * look_rows[0]):int(h * look_rows[1]), :]
+    zones = {}
+    for name, (a, b) in (("left", (0, w // 3)), ("center", (w // 3, 2 * w // 3)),
+                         ("right", (2 * w // 3, w))):
+        near = float(np.percentile(lo[:, a:b], pct_ahead))
+        ratio = near / ref_disp
+        openness = float(np.clip((ratio_block - ratio) / (ratio_block - ratio_open), 0.0, 1.0))
+        zones[name] = {"near": round(near, 2), "ratio": round(ratio, 3),
+                       "openness": round(openness, 3)}
+    return {
+        "zones": zones,
+        "ref_disp": round(ref_disp, 2),
+        "look_rows": list(look_rows),     # fractional bands for overlay
+        "ref_rows": list(ref_rows),
+        "ref_cols": list(ref_cols),
+        "ratio_open": ratio_open,
+        "ratio_block": ratio_block,
+    }
+
+
 def _viz(d, path):
     lo, hi = float(d.min()), float(d.max())
     g = ((d - lo) / (hi - lo + 1e-6) * 255).astype("uint8")   # near = bright

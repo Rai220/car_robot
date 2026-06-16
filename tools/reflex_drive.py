@@ -51,7 +51,7 @@ if (
     os.execve(VENV_PYTHON, [VENV_PYTHON, __file__, *sys.argv[1:]], env)
 
 import numpy as np
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 
 
 ROOT = REPO_ROOT
@@ -868,10 +868,238 @@ def command_from_state(per: Perception, goal: Goal, map_state: MapState,
     return "arc", int(speed), trim
 
 
+class RunLogger:
+    """Layer-3-facing run log.
+
+    Writes a structured JSONL decision stream plus periodic / event-driven
+    annotated camera frames into ``--log-dir`` so the self-improvement loop (and
+    a human) can see what the controller saw and *why* it acted. Each saved frame
+    carries an overlay of the L/C/R openness, the chosen action, the VLM goal, and
+    the exploration-map state. It must never raise into the drive loop, so every
+    I/O path is defensive.
+    """
+
+    # action prefixes worth a fresh frame even between heartbeats
+    EVENT_TOKENS = (
+        "blocked", "dead-end", "slow", "loop-escape", "retreat",
+        "vlm-retreat", "target-push", "hold", "arrived",
+    )
+
+    def __init__(self, args: argparse.Namespace) -> None:
+        self.enabled = bool(getattr(args, "frame_log", False))
+        self.annotate = bool(getattr(args, "annotate_frames", True))
+        self.heartbeat = max(0.0, float(getattr(args, "frame_log_sec", 3.0)))
+        self.keep = max(1, int(getattr(args, "frame_log_keep", 80)))
+        self.block, self.slow, self.open = args.block, args.slow, args.open
+        self.jsonl = None
+        self.jsonl_path: Optional[str] = None
+        self.frames_dir: Optional[str] = None
+        self.run_id: Optional[str] = None
+        self._font = None
+        self.n = 0
+        self.last_frame_t = 0.0
+        self.last_jsonl_t = 0.0
+        self.last_token = ""
+        if not self.enabled:
+            return
+        try:
+            log_dir = os.path.abspath(args.log_dir)
+            self.frames_dir = os.path.join(log_dir, "frames")
+            os.makedirs(self.frames_dir, exist_ok=True)
+            self.run_id = "reflex_" + time.strftime("%Y%m%dT%H%M%S", time.localtime())
+            self.jsonl_path = os.path.join(log_dir, self.run_id + ".jsonl")
+            self.jsonl = open(self.jsonl_path, "a", encoding="utf-8", buffering=1)
+            self._write_meta(args)
+            print(f"[log] decisions -> {self.jsonl_path}")
+            print(f"[log] frames    -> {self.frames_dir}/ (annotated={self.annotate}, keep={self.keep})")
+        except Exception as e:  # logging must never block driving
+            print(f"[log] disabled (setup failed): {e}")
+            self.enabled = False
+
+    def _write_meta(self, args: argparse.Namespace) -> None:
+        meta = {
+            "type": "meta",
+            "run_id": self.run_id,
+            "t": round(time.time(), 3),
+            "iso": time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime()),
+            "target": args.target or None,
+            "vlm": args.vlm,
+            "perception": args.perception,
+            "dry_run": bool(args.dry_run),
+            "speed": args.speed,
+            "thresholds": {"block": args.block, "slow": args.slow, "open": args.open},
+        }
+        self.jsonl.write(json.dumps(meta, ensure_ascii=False) + "\n")
+
+    @staticmethod
+    def _token(action: str) -> str:
+        parts = action.split()
+        return parts[0] if parts else "none"
+
+    def _record(self, now: float, per: Perception, goal: Goal, map_state: MapState,
+                action: str, speed: int, trim: int, age: float,
+                frame_name: Optional[str]) -> dict:
+        return {
+            "type": "decision",
+            "t": round(now, 3),
+            "iso": time.strftime("%H:%M:%S", time.localtime(now)),
+            "seq": getattr(per, "seq", -1),
+            "src": per.source,
+            "left": round(per.left, 3), "center": round(per.center, 3), "right": round(per.right, 3),
+            "action": action, "speed": int(speed), "trim": int(trim), "age": round(age, 3),
+            "goal": {
+                "mode": goal.mode, "route_bias": goal.route_bias,
+                "forward_intent": goal.forward_intent, "target_visible": goal.target_visible,
+                "target_bearing": goal.target_bearing, "target_size": goal.target_size,
+                "arrived": goal.arrived, "caution": goal.caution,
+                "confidence": round(goal.confidence, 2), "source": goal.source,
+                "reason": goal.reason[:120],
+            },
+            "map": {
+                "route_bias": map_state.route_bias,
+                "current_cell": list(map_state.current_cell),
+                "visited_cells": map_state.visited_cells,
+                "looping": map_state.looping, "loop_reason": map_state.loop_reason,
+            },
+            "frame": frame_name,
+        }
+
+    def log(self, now: float, frame: Optional[FrameSample], per: Perception, goal: Goal,
+            map_state: MapState, action: str, speed: int, trim: int, age: float) -> None:
+        if not self.enabled:
+            return
+        token = self._token(action)
+        is_event = token in self.EVENT_TOKENS
+        want_frame = frame is not None and (
+            (self.heartbeat > 0 and now - self.last_frame_t >= self.heartbeat)
+            or (is_event and token != self.last_token)
+        )
+        frame_name: Optional[str] = None
+        if want_frame:
+            frame_name = self._save_frame(now, frame, per, goal, map_state, action, speed, trim, age, token)
+            self.last_frame_t = now
+            self.last_token = token
+        if is_event or now - self.last_jsonl_t >= 0.5:
+            try:
+                rec = self._record(now, per, goal, map_state, action, speed, trim, age, frame_name)
+                self.jsonl.write(json.dumps(rec, ensure_ascii=False) + "\n")
+                self.last_jsonl_t = now
+            except Exception as e:
+                print(f"[log] jsonl write failed: {e}")
+
+    def _save_frame(self, now: float, frame: FrameSample, per: Perception, goal: Goal,
+                    map_state: MapState, action: str, speed: int, trim: int, age: float,
+                    token: str) -> Optional[str]:
+        self.n += 1
+        safe = re.sub(r"[^a-z0-9]+", "-", token.lower()).strip("-") or "act"
+        name = f"{time.strftime('%Y%m%dT%H%M%S', time.localtime(now))}_{self.n:05d}_{safe}.jpg"
+        path = os.path.join(self.frames_dir, name)
+        try:
+            if self.annotate:
+                rec = self._record(now, per, goal, map_state, action, speed, trim, age, name)
+                self._annotate(frame.pil, rec).save(path, "JPEG", quality=80)
+            else:
+                with open(path, "wb") as f:
+                    f.write(frame.jpg)
+            self._prune()
+            return name
+        except Exception as e:
+            print(f"[log] frame save failed ({e}); writing raw")
+            try:
+                with open(path, "wb") as f:
+                    f.write(frame.jpg)
+                self._prune()
+                return name
+            except Exception:
+                return None
+
+    def _font_obj(self):
+        if self._font is None:
+            try:
+                self._font = ImageFont.load_default()
+            except Exception:
+                self._font = False
+        return self._font or None
+
+    def _annotate(self, pil: Image.Image, rec: dict) -> Image.Image:
+        img = pil.convert("RGB")
+        if img.width < 320:  # upscale tiny camera frames so the overlay is legible
+            scale = max(1, round(320 / img.width))
+            img = img.resize((img.width * scale, img.height * scale))
+        else:
+            img = img.copy()
+        draw = ImageDraw.Draw(img, "RGBA")
+        W, H = img.size
+        font = self._font_obj()
+        g, m = rec["goal"], rec["map"]
+        lines = [
+            rec["action"],
+            f"L={rec['left']:.2f} C={rec['center']:.2f} R={rec['right']:.2f} [{rec['src']}]",
+            f"goal {g['mode']}/{g['route_bias']}/{g['forward_intent']} vis={g['target_visible']} {g['target_bearing']}/{g['target_size']}",
+            f"map {m['route_bias']} cell={tuple(m['current_cell'])} v={m['visited_cells']}{' LOOP' if m['looping'] else ''}",
+            f"spd={rec['speed']} trim={rec['trim']:+d} age={rec['age']:.2f}s",
+        ]
+        lh = 12
+        draw.rectangle([0, 0, W, 6 + lh * len(lines)], fill=(0, 0, 0, 150))
+        y = 3
+        for ln in lines:
+            draw.text((4, y), ln, fill=(255, 255, 255, 255), font=font)
+            y += lh
+        self._draw_bars(draw, W, H, rec)
+        return img
+
+    def _zone_color(self, v: float) -> tuple[int, int, int, int]:
+        if v < self.block:
+            return (220, 40, 40, 230)
+        if v < self.slow:
+            return (235, 140, 30, 230)
+        if v < self.open:
+            return (230, 215, 40, 230)
+        return (60, 200, 70, 230)
+
+    def _draw_bars(self, draw: ImageDraw.ImageDraw, W: int, H: int, rec: dict) -> None:
+        bw = max(10, W // 12)
+        gap = 4
+        maxh = min(60, H // 3)
+        base = H - 4
+        x = 4
+        for v in (rec["left"], rec["center"], rec["right"]):
+            vv = clamp(v, 0.0, 1.0)
+            draw.rectangle([x, base - maxh, x + bw, base], fill=(0, 0, 0, 120))
+            draw.rectangle([x, base - int(maxh * vv), x + bw, base], fill=self._zone_color(v))
+            x += bw + gap
+
+    def _prune(self) -> None:
+        try:
+            files = [
+                os.path.join(self.frames_dir, f)
+                for f in os.listdir(self.frames_dir)
+                if f.lower().endswith(".jpg")
+            ]
+            if len(files) <= self.keep:
+                return
+            files.sort(key=os.path.getmtime)
+            for p in files[: len(files) - self.keep]:
+                try:
+                    os.remove(p)
+                except OSError:
+                    pass
+        except Exception:
+            pass
+
+    def close(self) -> None:
+        if self.jsonl:
+            try:
+                self.jsonl.close()
+            except Exception:
+                pass
+
+
 def controller_loop(shared: Shared, args: argparse.Namespace) -> None:
     car = Car(args.car_ip, args.dry_run)
     car.set_turnspeed(args.turnspeed)
     memory = ExplorerMemory(args.map_cell_size)
+    logger = RunLogger(args)
     turns_without_forward = 0
     last_loop_escape = 0.0
     last_log = 0.0
@@ -892,6 +1120,7 @@ def controller_loop(shared: Shared, args: argparse.Namespace) -> None:
 
             with shared.lock:
                 per = shared.perception
+                frame = shared.frame
                 raw_goal = shared.goal
                 cap_err = shared.capture_errors
                 per_err = shared.perception_errors
@@ -1015,6 +1244,8 @@ def controller_loop(shared: Shared, args: argparse.Namespace) -> None:
             with shared.lock:
                 shared.map_state = map_state
 
+            logger.log(now, frame, per, goal, map_state, action, action_speed, action_trim, age)
+
             if args.debug or now - last_log >= args.log_sec:
                 g_age = now - goal.t if goal.t else 999.0
                 print(
@@ -1033,6 +1264,7 @@ def controller_loop(shared: Shared, args: argparse.Namespace) -> None:
     finally:
         shared.running = False
         car.stop()
+        logger.close()
         print("STOP sent. done.")
 
 
@@ -1125,6 +1357,20 @@ def build_parser() -> argparse.ArgumentParser:
     ap.add_argument("--dry-run", action="store_true", help="read camera and decide, but do not move")
     ap.add_argument("--debug", action="store_true")
     ap.add_argument("--log-sec", type=float, default=0.75)
+
+    # Layer-3-facing run log: structured decisions + annotated frames the
+    # self-improvement loop can read back. All paths land under --log-dir, which
+    # is gitignored.
+    ap.add_argument("--log-dir", default="logs",
+                    help="directory for the JSONL decision log + saved frames (gitignored)")
+    ap.add_argument("--frame-log", action=argparse.BooleanOptionalAction, default=True,
+                    help="write a JSONL decision stream and annotated frames into --log-dir")
+    ap.add_argument("--frame-log-sec", type=float, default=3.0,
+                    help="heartbeat seconds between saved frames; 0 = save only on events")
+    ap.add_argument("--frame-log-keep", type=int, default=80,
+                    help="max frames kept under --log-dir/frames (oldest pruned)")
+    ap.add_argument("--annotate-frames", action=argparse.BooleanOptionalAction, default=True,
+                    help="overlay L/C/R openness bars + action/goal/map on saved frames")
     return ap
 
 

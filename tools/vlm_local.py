@@ -1,15 +1,21 @@
 """
-Local VLM brain for seek.py — Qwen2.5-VL-7B (4-bit) via MLX on Apple GPU.
+Local VLM brain for seek.py — any mlx-vlm model via MLX on Apple GPU.
 
-Drop-in alternative to the cloud Gemini call in seek.py: same return dict
-(target_visible / target_bearing / target_size / target_motion / turn_strength /
-search_strategy / safe_forward / arrived / reason). No network, no per-call cost.
+Defaults to Qwen2.5-VL-7B (4-bit); also supports Apple FastVLM (much faster,
+near-real-time on Apple Silicon) and other mlx-vlm families. Drop-in alternative
+to the cloud Gemini call in seek.py: same return dict (target_visible /
+target_bearing / target_size / target_motion / turn_strength / search_strategy /
+safe_forward / arrived / reason). No network, no per-call cost.
 
-Local 4-bit models don't enforce a JSON schema like Gemini structured output, so
-we (1) state the exact JSON shape in the prompt and (2) parse tolerantly.
+Local models don't enforce a JSON schema like Gemini structured output, so we
+(1) state the exact JSON shape in the prompt and (2) parse tolerantly.
+
+The model family decides how many images a single call accepts: Qwen2.5-VL takes
+several (we use 2 for a motion cue), while FastVLM / LLaVA-style models take one,
+so we clamp to the last frame for those.
 
 API:
-    load_local(model_dir="models/qwen2.5-vl-7b-4bit") -> None
+    load_local(model_dir="models/qwen2.5-vl-7b-4bit") -> str   # returns a label
     ask_seek_local(target, frames, hist_lines) -> dict   # frames: [(t, jpg_bytes), ...]
 """
 import os, json, re, time, tempfile
@@ -17,8 +23,15 @@ from io import BytesIO
 from PIL import Image
 
 _model = _proc = _config = None
+_model_type = None        # e.g. "qwen2_5_vl", "llava_qwen2" (FastVLM)
+_max_images = None        # how many images one call accepts
+_label = None
 _DEF_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                         "models", "qwen2.5-vl-7b-4bit")
+
+# Families that accept exactly one image per turn (mlx-vlm remaps llava_qwen2 ->
+# fastvlm). Everything else we let take the motion pair.
+_SINGLE_IMAGE_TYPES = {"llava_qwen2", "fastvlm", "llava", "llava_bunny", "llava_next"}
 
 # valid enum values, used to clamp whatever the model returns
 _BEARING = {"far_left", "left", "center", "right", "far_right", "none"}
@@ -32,14 +45,28 @@ _DEFAULT = {"target_visible": False, "target_bearing": "none", "target_size": "n
             "search_strategy": "spin_right", "safe_forward": False, "reason": "parse-failed", "arrived": False}
 
 
+def _cfg_get(cfg, key, default=None):
+    if cfg is None:
+        return default
+    if isinstance(cfg, dict):
+        return cfg.get(key, default)
+    return getattr(cfg, key, default)
+
+
 def load_local(model_dir=None):
-    global _model, _proc, _config
+    """Load any mlx-vlm model (Qwen2.5-VL, Apple FastVLM, ...). Detects the model
+    family to decide how many images one call accepts. Returns a label string."""
+    global _model, _proc, _config, _model_type, _max_images, _label
     from mlx_vlm import load
     from mlx_vlm.utils import load_config
     md = model_dir or _DEF_DIR
     _model, _proc = load(md)
     _config = load_config(md)
-    return "mlx/Qwen2.5-VL-7B-4bit"
+    _model_type = str(_cfg_get(_config, "model_type", "") or "").lower()
+    _max_images = 1 if _model_type in _SINGLE_IMAGE_TYPES else 2
+    name = os.path.basename(os.path.normpath(md)) or str(md)
+    _label = f"mlx/{name} ({_model_type or 'unknown'}, max_imgs={_max_images})"
+    return _label
 
 
 def _build_prompt(target, hist_lines):
@@ -103,7 +130,8 @@ def _clamp(d):
 def ask_seek_local(target, frames, hist_lines, max_frames=2, max_tokens=200):
     from mlx_vlm import generate
     from mlx_vlm.prompt_utils import apply_chat_template
-    use = frames[-max_frames:] if frames else []
+    cap = min(max_frames, _max_images or 1)   # FastVLM/LLaVA take 1; Qwen takes the pair
+    use = frames[-cap:] if frames else []
     tmp = []
     try:
         for _, jpg in use:
@@ -126,8 +154,9 @@ def ask_seek_local(target, frames, hist_lines, max_frames=2, max_tokens=200):
 if __name__ == "__main__":
     import sys
     img = sys.argv[1] if len(sys.argv) > 1 else "cam_check.jpg"
+    model_dir = sys.argv[2] if len(sys.argv) > 2 else None   # e.g. models/fastvlm-0.5b-bf16
     print("loading local VLM...")
-    print("device:", load_local())
+    print("label:", load_local(model_dir))
     jpg = open(img, "rb").read()
     t = time.time()
     d = ask_seek_local("yellow toy road roller / steamroller with a big cylindrical drum",
