@@ -242,6 +242,14 @@ firmware/**/build/
 *.avi
 *.mkv
 
+# Exception: the one committed README demo GIF (a trimmed, downscaled excerpt of
+# the local-only robocar.mp4 screen capture). The source mp4 itself stays ignored.
+!docs/media/robocar.gif
+
+# Runtime logs and autonomous self-improvement artifacts
+logs/
+.car_self_improve/
+
 # Local ML model weights (large; downloaded, not source)
 /models/
 
